@@ -10,8 +10,6 @@ import pandas as pd
 
 from unittest import TestCase, TestSuite, TextTestRunner
 
-from utils import collect_ext
-
 #-------------------------------------------------------------------------
 
 @dataclass
@@ -32,6 +30,21 @@ class DataFrameTest(TestCase):
 
 #-------------------------------------------------------------------------
 
+def _collect_ext(names) -> dict:
+
+    res = {}
+    for basename, ext in map(os.path.splitext, names):
+        res.setdefault(basename, []).append(ext)
+
+    if not all(len(v) == 1 for v in res.values()):
+        raise ValueError(f"the `{{basename: extension}}` mapping is not injective:\n{res}")
+
+    return \
+    {
+        key: value[0]
+        for key, value in res.items()
+    }
+
 def make_tests \
 (
     raw_dir:    Union[Path, str],
@@ -45,8 +58,8 @@ def make_tests \
     raw_names = os.listdir(raw_dir)
     parsed_names = os.listdir(parsed_dir)
 
-    raw_ext = collect_ext(raw_names)
-    parsed_ext = collect_ext(parsed_names)
+    raw_ext = _collect_ext(raw_names)
+    parsed_ext = _collect_ext(parsed_names)
 
     matching = sorted(raw_ext.keys() & parsed_ext.keys())
 
@@ -72,6 +85,8 @@ def make_tests \
     print('-'*60)
 
     return all_tests
+
+#-------------------------------------------------------------------------
 
 def run(test_kwargs, runner_kwargs = None):
 
