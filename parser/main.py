@@ -26,6 +26,6 @@ def parse(path: Path | str) -> pd.DataFrame:
     ...
 
 #-------------------------------------------------------------------------
-## testing the pasrer
+## testing the parser
 
 run_tests(parser = parse)
