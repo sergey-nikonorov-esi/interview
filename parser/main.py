@@ -3,7 +3,8 @@ from pathlib import Path
 import re
 import pandas as pd
 
-from config import run_tests
+import config
+import tests
 
 #-------------------------------------------------------------------------
 ## helpers (you may want to modify/use those as a base);
@@ -28,4 +29,12 @@ def parse(path: Path | str) -> pd.DataFrame:
 #-------------------------------------------------------------------------
 ## testing the parser
 
-run_tests(parser = parse)
+tests.run \
+(
+    test_kwargs = dict \
+    (
+        raw_dir = config.DATA_DIR / 'raw',
+        parsed_dir = config.DATA_DIR / 'parsed',
+        parser = parse
+    )
+)
