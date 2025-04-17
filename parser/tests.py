@@ -12,6 +12,10 @@ from unittest import TestCase, TestSuite, TextTestRunner
 
 #-------------------------------------------------------------------------
 
+def _unify_na(df: pd.DataFrame):
+    df = df.astype(object)
+    return df.where(df.notna(), pd.NA)
+
 @dataclass
 class DataFrameTest(TestCase):
 
@@ -20,6 +24,12 @@ class DataFrameTest(TestCase):
 
     def __post_init__(self):
         super().__init__('test')
+
+        self.raw, self.parsed = map \
+        (
+            _unify_na,
+            (self.raw, self.parsed)
+        )
 
     def test(self):
         self.assertTrue \

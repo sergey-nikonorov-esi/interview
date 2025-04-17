@@ -2,6 +2,22 @@ from typing import Collection
 
 #-------------------------------------------------------------------------
 
+def dot_apply(*F):
+    """
+    reverse function composition, i.e.:
+       `dot_apply(f1, f2, f3) == x -> f3(f2(f1(x)))`
+
+    the name comes from the fact that the result resembles a chain method call:
+       `x -> x.f1().f2().f3()`
+    """
+
+    def __f(x):
+        for f in F:
+            x = f(x)
+        return x
+
+    return __f
+
 def strided(arr: Collection, chunk_size, step):
     """
     returns a generator of strided chunks from `arr`
