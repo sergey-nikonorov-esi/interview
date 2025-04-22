@@ -81,7 +81,7 @@ should be read top to bottom, as triplets can 'override' each other, for example
    A -> B <-[0]- A
    A -[2]-> B
    ```
-   The second triplet of the first line 'overrides' the first triplet.
+   The second triplet of the first line (`B <-[0]- A`) 'overrides' the first triplet (`A -> B`).
    The second line 'overrides' the whole first line.
 
 2.
